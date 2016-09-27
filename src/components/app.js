@@ -7,6 +7,7 @@ class ToDoList extends React.Component{
       items: []
     }
     this.onSubmit = this.onSubmit.bind(this)
+    this.deleteItem= this.deleteItem.bind(this)
   }
 
   onSubmit(event){
@@ -16,12 +17,18 @@ class ToDoList extends React.Component{
     event.target.firstChild.value = ""
    }
 
+   deleteItem(event){
+     let action = {type: 'DELETE_ITEM', payload: {id: event.target.id}}
+      this.props.store.dispatch(action)
+   }
+
   render(){
     return(
       <div>
+        <h2>What do you have to do today?</h2>
         <ul>
-          {this.props.store.getState().map((item)=>{
-            return <li>{item.title}</li>
+          {this.props.store.getState().map((item, index)=>{
+            return <li>{item.title} <button id={index} onClick={this.deleteItem}>Delete Item</button></li>
           })}
         </ul>
         <form onSubmit={this.onSubmit}>
